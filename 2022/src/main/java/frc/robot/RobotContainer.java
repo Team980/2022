@@ -6,9 +6,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Shifter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,7 +29,22 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  private final Drivetrain drivetrain = new Drivetrain();
+
+  private final Shifter shifter  = new Shifter (drivetrain);
+
+  private final XboxController xBox = new XboxController(2);
+
   public RobotContainer() {
+    drivetrain.setDefaultCommand(new RunCommand(
+      () -> drivetrain.driveRobot(xBox.getLeftY(), xBox.getRightX()), 
+      drivetrain
+      ));
+    shifter.setDefaultCommand(new RunCommand(
+      () -> shifter.autoShift(),
+       shifter
+       ));
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -34,7 +55,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    new JoystickButton(xBox, Button.kRightBumper.value).whenPressed(new RunCommand(shifter::setHighGear, shifter) );
+    new JoystickButton(xBox, Button.kLeftBumper.value).whenPressed(new RunCommand(shifter::setLowGear, shifter) );
+    new JoystickButton(xBox, Button.kB.value).whenPressed(new InstantCommand(shifter::autoShift, shifter) );
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
