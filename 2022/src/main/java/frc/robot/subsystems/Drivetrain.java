@@ -27,14 +27,16 @@ public class Drivetrain extends SubsystemBase {
     var leftTop = new WPI_TalonSRX(3);
     var leftBack = new WPI_TalonSRX(1);
     var leftFront = new WPI_TalonSRX(5);
+    leftTop.setInverted(true);
     leftDrive = new MotorControllerGroup(leftTop, leftBack, leftFront);
 
-    leftEncoder = new Encoder(0, 1, false, EncodingType.k4X); //come back to false bit, switch if forward is negative and vise versa
+    leftEncoder = new Encoder(0, 1, true, EncodingType.k4X); //come back to false bit, switch if forward is negative and vise versa
     leftEncoder.setDistancePerPulse( (Math.PI / 3.0) / 2048.0 );
 
     var rightTop = new WPI_TalonSRX(4);
     var rightBack = new WPI_TalonSRX(2);
     var rightFront = new WPI_TalonSRX(6);
+    rightTop.setInverted(true);
 
     rightDrive = new MotorControllerGroup(rightTop, rightBack, rightFront);
     rightDrive.setInverted(true);
