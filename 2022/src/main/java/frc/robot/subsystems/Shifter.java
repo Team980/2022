@@ -27,7 +27,7 @@ public class Shifter extends SubsystemBase {
     if(isLowGear()&&(Math.abs(drivetrain.getLeftSpeed()) > SHIFT_POINT_HIGH || Math.abs(drivetrain.getRightSpeed()) > SHIFT_POINT_HIGH )){
       shifter.set(false);
     }
-    else if(!isLowGear()&&(Math.abs(drivetrain.getLeftSpeed()) < SHIFT_POINT_LOW || Math.abs(drivetrain.getRightSpeed()) < SHIFT_POINT_LOW )){
+    else if(!isLowGear()&&(Math.abs(drivetrain.getLeftSpeed()) < SHIFT_POINT_LOW && Math.abs(drivetrain.getRightSpeed()) < SHIFT_POINT_LOW )){
       shifter.set(true);
     }
   }

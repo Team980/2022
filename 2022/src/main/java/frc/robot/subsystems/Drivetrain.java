@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
@@ -21,15 +22,21 @@ public class Drivetrain extends SubsystemBase {
   private DifferentialDrive robotDrive;
   private Encoder leftEncoder;
   private Encoder rightEncoder;
+
+  private PigeonIMU imu;
+  private double [] ypr;
   
 
   public Drivetrain() {
+    imu = new PigeonIMU(15);
+    ypr = new double [3];
+
     var leftTop = new WPI_TalonSRX(3);
     var leftBack = new WPI_TalonSRX(1);
     var leftFront = new WPI_TalonSRX(5);
     leftTop.setInverted(true);
     leftDrive = new MotorControllerGroup(leftTop, leftBack, leftFront);
-
+  
     leftEncoder = new Encoder(0, 1, true, EncodingType.k4X); //come back to false bit, switch if forward is negative and vise versa
     leftEncoder.setDistancePerPulse( (Math.PI / 3.0) / 2048.0 );
 
@@ -54,6 +61,8 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    imu.getYawPitchRoll(ypr);
+
     SmartDashboard.putNumber("Left Speed", leftEncoder.getRate() );
     SmartDashboard.putNumber("Right Speed", rightEncoder.getRate() );
 
@@ -81,4 +90,8 @@ public class Drivetrain extends SubsystemBase {
   public double getRightDistance() {
     return rightEncoder.getDistance();
   } 
+
+  public double [] getYPR() {
+    return ypr;
+  }
 }
