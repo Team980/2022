@@ -10,20 +10,21 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Finder;
 
 public class CollectCargoCommand extends CommandBase {
-  private Finder finder;
+  //private Finder finder;
   private Collector collector;
   private Drivetrain drivetrain;
 
   private final double DISTANCE_WHEN_CAUGHT = 0.3; // in volts
+  //TODO find real distance when ball is captured
 
   /** Creates a new CollectCargoCommand. */
-  public CollectCargoCommand(Finder finder, Collector collector, Drivetrain drivetrain) {
-    this.finder = finder;
+  public CollectCargoCommand(Collector collector, Drivetrain drivetrain) {
+    //this.finder = finder;
     this.collector = collector;
     this.drivetrain = drivetrain;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(finder);
+    //addRequirements(finder);
     addRequirements(collector);
     addRequirements(drivetrain);
   }
@@ -50,9 +51,9 @@ public class CollectCargoCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() { // TODO finish finisher
-    // if(collector.getDistance() < DISTANCE_WHEN_CAUGHT) {
-    //   return true;
-    // } 
+     if(collector.getDistance() < DISTANCE_WHEN_CAUGHT) {
+       return true;
+     } 
     return false;
   }
 }

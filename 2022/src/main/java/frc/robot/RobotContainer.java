@@ -8,8 +8,17 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.DriveForwardCommand;
+import frc.robot.subsystems.Climb;
+import frc.robot.subsystems.Collector;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Finder;
 import frc.robot.subsystems.Shifter;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Targeting;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -26,8 +35,13 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   private final Drivetrain drivetrain = new Drivetrain();
-
   private final Shifter shifter  = new Shifter (drivetrain);
+  private final Shooter shooter = new Shooter();
+  private final Collector collector = new Collector();
+  private final Conveyor conveyor = new Conveyor();
+  private final Climb climber = new Climb();
+  private final Finder tracker = new Finder(true);
+  private final Targeting targetingSystem = new Targeting();
 
   private final XboxController xBox = new XboxController(2);
 
@@ -35,7 +49,16 @@ public class RobotContainer {
   private final Joystick throttle = new Joystick(1);
   private final Joystick prajBox = new Joystick(4);
 
+  private final DriveForwardCommand driveForwardCommand = new DriveForwardCommand(drivetrain);
+  //TODO need auto commands for shoot then taxi, shoot and find ball, shoot-find-shoot, and find-shoot-shoot
+
+  SendableChooser<Command> autoChooser = new SendableChooser<>();
+
   public RobotContainer() {
+    autoChooser.setDefaultOption("Drive Forward", driveForwardCommand);
+
+    SmartDashboard.putData(autoChooser);
+
     drivetrain.setDefaultCommand(new RunCommand(
       () -> drivetrain.driveRobot(throttle.getY(), wheel.getX()), 
       drivetrain
@@ -56,9 +79,14 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    //TODO switch this to PrajBox switches
     new JoystickButton(xBox, Button.kRightBumper.value).whenPressed(new RunCommand(shifter::setHighGear, shifter) );
     new JoystickButton(xBox, Button.kLeftBumper.value).whenPressed(new RunCommand(shifter::setLowGear, shifter) );
     new JoystickButton(xBox, Button.kB.value).whenPressed(new InstantCommand(shifter::autoShift, shifter) );
+
+    //TODO need control for collector, conveyor, shooter, also possibly raise and lower collector
+
+    //TODO need Climber control, use safety prajbox switch to enable and xbox to deploy and retract
   }
 
   /**
@@ -68,6 +96,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return autoChooser.getSelected();
   }
 }

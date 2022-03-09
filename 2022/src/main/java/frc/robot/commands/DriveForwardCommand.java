@@ -9,6 +9,8 @@ import frc.robot.subsystems.Drivetrain;
 
 public class DriveForwardCommand extends CommandBase {
   private Drivetrain drivetrain;
+  private final double DISTANCE_TO_DRIVE = 5;//in ft
+  //TODO need to find actual taxi distance
 
   /** Creates a new DriveForwardCommand. */
   public DriveForwardCommand(Drivetrain drivetrain) {
@@ -34,7 +36,7 @@ public class DriveForwardCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(drivetrain.getLeftDistance() >= 5 || drivetrain.getRightDistance() >= 5) {
+    if(drivetrain.getLeftDistance() >= DISTANCE_TO_DRIVE || drivetrain.getRightDistance() >= DISTANCE_TO_DRIVE) {
       return true;
     }
     return false;

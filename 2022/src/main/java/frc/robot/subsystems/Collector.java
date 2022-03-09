@@ -15,7 +15,7 @@ public class Collector extends SubsystemBase {
 
   private WPI_TalonSRX grabber;
 
-  //private AnalogInput ballDetector;
+  private AnalogInput ballDetector;
   private double distance;
 
   /** Creates a new Collector. */
@@ -24,20 +24,20 @@ public class Collector extends SubsystemBase {
 
     grabber = new WPI_TalonSRX(8);
 
-    //ballDetector = new AnalogInput(0);
+    ballDetector = new AnalogInput(0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    //distance = ballDetector.getVoltage();
-    //SmartDashboard.putNumber("distance in volts", distance);
+    distance = ballDetector.getVoltage();
+    SmartDashboard.putNumber("distance in volts", distance);
   }
-  /*
+  
   public double getDistance(){
     return distance;
   }
-  */
+  
   public void forward() {
     collect.set(-1);
     grabber.set(-1);
