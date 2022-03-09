@@ -84,7 +84,7 @@ public class RobotContainer {
     new JoystickButton(xBox, Button.kLeftBumper.value).whenPressed(new RunCommand(shifter::setLowGear, shifter) );
     new JoystickButton(xBox, Button.kB.value).whenPressed(new InstantCommand(shifter::autoShift, shifter) );
 
-    //TODO need control for collector, conveyor, shooter, also possibly raise and lower collector
+    //TODO need control for collector, conveyor, shooter, also raise and lower collector
 
     //TODO need Climber control, use safety prajbox switch to enable and xbox to deploy and retract
   }
