@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -63,10 +64,18 @@ public class RobotContainer {
       () -> drivetrain.driveRobot(throttle.getY(), wheel.getX()), 
       drivetrain
       ));
-    shifter.setDefaultCommand(new RunCommand(
-      () -> shifter.autoShift(),
-       shifter
-       ));
+    shifter.setDefaultCommand(new RunCommand(shifter::setLowGear, shifter) );
+
+    conveyor.setDefaultCommand(new RunCommand(
+      () -> conveyor.runConveyor(xBox.getRightY()), 
+      conveyor
+      ));
+
+      collector.setDefaultCommand(new RunCommand(
+      () -> collector.runCollector(-xBox.getLeftY()),
+      collector
+      ));
+    
 
     // Configure the button bindings
     configureButtonBindings();
@@ -80,9 +89,18 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //TODO switch this to PrajBox switches
-    new JoystickButton(xBox, Button.kRightBumper.value).whenPressed(new RunCommand(shifter::setHighGear, shifter) );
-    new JoystickButton(xBox, Button.kLeftBumper.value).whenPressed(new RunCommand(shifter::setLowGear, shifter) );
-    new JoystickButton(xBox, Button.kB.value).whenPressed(new InstantCommand(shifter::autoShift, shifter) );
+    new JoystickButton(throttle, 5).whenPressed(new RunCommand(shifter::setHighGear, shifter) );
+    new JoystickButton(throttle, 4).whenPressed(new RunCommand(shifter::setLowGear, shifter) );
+    new JoystickButton(throttle, 2).whenPressed(new RunCommand(
+      () -> shifter.autoShift(),
+      shifter
+      ));
+    new JoystickButton(xBox, Button.kY.value).whenPressed(new InstantCommand(collector::deployCollector, collector));
+    new JoystickButton(xBox, Button.kA.value).whenPressed(new InstantCommand(collector::retractCollector, collector));
+    new JoystickButton(xBox, Button.kStart.value).whenPressed(new RunCommand(shooter::fire, shooter));
+    new JoystickButton(xBox, Button.kBack.value).whenPressed(new RunCommand(shooter::stop, shooter));
+    new POVButton(xBox, 0).whenPressed(new InstantCommand(climber::extend, climber));
+    new POVButton(xBox, 180).whenPressed(new InstantCommand(climber::retract, climber));
 
     //TODO need control for collector, conveyor, shooter, also raise and lower collector
 

@@ -40,8 +40,12 @@ public class Collector extends SubsystemBase {
     return distance;
   }
 
-  public void deployCollector(boolean deploy){
-    deployRetract.set(deploy);
+  public void deployCollector(){
+    deployRetract.set(true);
+  }
+
+  public void retractCollector(){
+    deployRetract.set(false);
   }
   
   public void forward() {
@@ -52,6 +56,11 @@ public class Collector extends SubsystemBase {
   public void reverse() {
     collect.set(1);
     grabber.set(1);
+  }
+
+  public void runCollector(double speed){
+    collect.set(speed);
+    grabber.set(speed);
   }
 
   public void stop() {
