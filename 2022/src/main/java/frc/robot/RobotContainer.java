@@ -99,7 +99,8 @@ public class RobotContainer {
     new JoystickButton(xBox, Button.kA.value).whenPressed(new InstantCommand(collector::retractCollector, collector));
     new JoystickButton(xBox, Button.kStart.value).whenPressed(new RunCommand(shooter::fire, shooter));
     new JoystickButton(xBox, Button.kBack.value).whenPressed(new RunCommand(shooter::stop, shooter));
-    new POVButton(xBox, 0).whenPressed(new InstantCommand(climber::extend, climber));
+    new POVButton(xBox, 0).and(new JoystickButton(prajBox, 1)).whenActive(new InstantCommand(climber::extend, climber));
+    //TODO need to find number of safety switch
     new POVButton(xBox, 180).whenPressed(new InstantCommand(climber::retract, climber));
 
     //TODO need control for collector, conveyor, shooter, also raise and lower collector
