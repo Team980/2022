@@ -29,10 +29,10 @@ public class Climb extends SubsystemBase {
   }
 
   public void extend() {
-    climber.set(Value.kForward);
+    climber.set(Value.kReverse);
   }
   
   public void retract() {
-    climber.set(Value.kReverse);
+    climber.set(Value.kForward);
   }
 }

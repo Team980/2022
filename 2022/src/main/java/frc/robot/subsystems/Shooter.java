@@ -13,10 +13,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
-  private WPI_TalonSRX flywheel;
+  private WPI_TalonSRX flywheelTop;
+  private WPI_TalonSRX flywheelBottom;
   private Encoder shooterEncoder; 
   public Shooter() {
-    flywheel = new WPI_TalonSRX(10);
+    flywheelTop = new WPI_TalonSRX(10);
+    flywheelBottom = new WPI_TalonSRX(11);
+
     shooterEncoder = new Encoder(4, 5, true, EncodingType.k4X);
     shooterEncoder.setDistancePerPulse(1 / 2048);
   }
@@ -28,10 +31,12 @@ public class Shooter extends SubsystemBase {
   }
 
   public void fire() {
-    flywheel.set(1);
+    flywheelTop.set(-.5);
+    flywheelBottom.set(-.5);
   }
 
   public void stop() {
-    flywheel.stopMotor();
+    flywheelTop.stopMotor();
+    flywheelBottom.stopMotor();
   }
 }

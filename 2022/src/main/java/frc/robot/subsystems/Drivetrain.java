@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
@@ -28,7 +29,8 @@ public class Drivetrain extends SubsystemBase {
   
 
   public Drivetrain() {
-    imu = new PigeonIMU(15);
+    var collectorTalon = new WPI_TalonSRX(7);
+    imu = new PigeonIMU(collectorTalon);
     ypr = new double [3];
 
     var leftTop = new WPI_TalonSRX(3);
@@ -36,8 +38,12 @@ public class Drivetrain extends SubsystemBase {
     var leftFront = new WPI_TalonSRX(5);
     leftTop.setInverted(true);
     leftDrive = new MotorControllerGroup(leftTop, leftBack, leftFront);
+    leftTop.setNeutralMode(NeutralMode.Coast);
+    leftBack.setNeutralMode(NeutralMode.Coast);
+    leftFront.setNeutralMode(NeutralMode.Coast);
+
   
-    leftEncoder = new Encoder(0, 1, true, EncodingType.k4X); //come back to false bit, switch if forward is negative and vise versa
+    leftEncoder = new Encoder(0, 1, false, EncodingType.k4X); //come back to false bit, switch if forward is negative and vise versa
     leftEncoder.setDistancePerPulse( (Math.PI / 3.0) / 2048.0 );
 
     var rightTop = new WPI_TalonSRX(4);
@@ -47,8 +53,11 @@ public class Drivetrain extends SubsystemBase {
 
     rightDrive = new MotorControllerGroup(rightTop, rightBack, rightFront);
     rightDrive.setInverted(true);
+    rightTop.setNeutralMode(NeutralMode.Coast);
+    rightBack.setNeutralMode(NeutralMode.Coast);
+    rightFront.setNeutralMode(NeutralMode.Coast);
 
-    rightEncoder = new Encoder(2, 3, false, EncodingType.k4X); //come back to false bit, switch if forward is negative and vise versa
+    rightEncoder = new Encoder(2, 3, true, EncodingType.k4X); //come back to false bit, switch if forward is negative and vise versa
     rightEncoder.setDistancePerPulse( (Math.PI / 3.0) / 2048.0 );
 
     robotDrive = new DifferentialDrive(leftDrive, rightDrive);
@@ -62,7 +71,7 @@ public class Drivetrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     imu.getYawPitchRoll(ypr);
-
+    SmartDashboard.putNumber("IMU Yaw", ypr[0]);
     SmartDashboard.putNumber("Left Speed", leftEncoder.getRate() );
     SmartDashboard.putNumber("Right Speed", rightEncoder.getRate() );
 
@@ -91,7 +100,16 @@ public class Drivetrain extends SubsystemBase {
     return rightEncoder.getDistance();
   } 
 
+  public void resetEncoders(){
+    leftEncoder.reset();
+    rightEncoder.reset();
+  }
+
   public double [] getYPR() {
     return ypr;
+  }
+
+  public void resetYaw(){
+    imu.setYaw(0);
   }
 }
