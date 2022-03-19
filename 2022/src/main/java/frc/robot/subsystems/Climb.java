@@ -16,6 +16,7 @@ public class Climb extends SubsystemBase {
   /** Creates a new Climb. */
   public Climb() {
     climber = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
+    climber.set(Value.kReverse);
   }
 
   @Override
@@ -29,10 +30,10 @@ public class Climb extends SubsystemBase {
   }
 
   public void extend() {
-    climber.set(Value.kReverse);
+    climber.set(Value.kForward);
   }
   
   public void retract() {
-    climber.set(Value.kForward);
+    climber.set(Value.kReverse);
   }
 }
