@@ -20,7 +20,7 @@ public class Shooter extends SubsystemBase {
     flywheelTop = new WPI_TalonSRX(10);
     flywheelBottom = new WPI_TalonSRX(11);
 
-    shooterEncoder = new Encoder(4, 5, true, EncodingType.k4X);
+    shooterEncoder = new Encoder(8, 9, true, EncodingType.k4X);
     shooterEncoder.setDistancePerPulse(1 / 2048);
   }
 

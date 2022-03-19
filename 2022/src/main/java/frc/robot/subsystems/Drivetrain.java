@@ -43,7 +43,7 @@ public class Drivetrain extends SubsystemBase {
     leftFront.setNeutralMode(NeutralMode.Coast);
 
   
-    leftEncoder = new Encoder(0, 1, false, EncodingType.k4X); //come back to false bit, switch if forward is negative and vise versa
+    leftEncoder = new Encoder(4, 5, false, EncodingType.k4X); //come back to false bit, switch if forward is negative and vise versa
     leftEncoder.setDistancePerPulse( (Math.PI / 3.0) / 2048.0 );
 
     var rightTop = new WPI_TalonSRX(4);
@@ -57,7 +57,7 @@ public class Drivetrain extends SubsystemBase {
     rightBack.setNeutralMode(NeutralMode.Coast);
     rightFront.setNeutralMode(NeutralMode.Coast);
 
-    rightEncoder = new Encoder(2, 3, true, EncodingType.k4X); //come back to false bit, switch if forward is negative and vise versa
+    rightEncoder = new Encoder(6, 7, true, EncodingType.k4X); //come back to false bit, switch if forward is negative and vise versa
     rightEncoder.setDistancePerPulse( (Math.PI / 3.0) / 2048.0 );
 
     robotDrive = new DifferentialDrive(leftDrive, rightDrive);
