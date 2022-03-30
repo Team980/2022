@@ -34,7 +34,9 @@ public class CollectCargoCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    drivetrain.resetEncoders();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -56,7 +58,7 @@ public class CollectCargoCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() { // TODO finish finisher
-     if(collector.getDistance() < DISTANCE_WHEN_CAUGHT) {
+     if(drivetrain.getLeftDistance() == 2 || drivetrain.getRightDistance() == 2) {
        return true;
      } 
     return false;

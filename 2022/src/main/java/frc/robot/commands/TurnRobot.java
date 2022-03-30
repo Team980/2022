@@ -29,7 +29,7 @@ public class TurnRobot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.driveRobot(0, drivetrain.getYPR()[0]/45);
+    drivetrain.driveRobot(0, drivetrain.getYPR()[0]/55);
   }
 
   // Called once the command ends or is interrupted.

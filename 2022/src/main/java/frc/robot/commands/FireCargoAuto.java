@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Targeting;
 import frc.robot.subsystems.VelocityControlledShooter;
@@ -14,27 +15,32 @@ public class FireCargoAuto extends CommandBase {
   private VelocityControlledShooter shooter;
   private Conveyor conveyor;
   private Targeting targeting;
+  private Collector collector; 
 
   private int timeCounter;
   private boolean initialShot;
   private double spinToRange;
 
-  public FireCargoAuto(VelocityControlledShooter shooter, Conveyor conveyor, boolean initialShot, Targeting targeting) {
+  public FireCargoAuto(VelocityControlledShooter shooter, Conveyor conveyor, boolean initialShot, Targeting targeting, Collector collector) {
     this.shooter = shooter;
     this.conveyor = conveyor;
     this.initialShot = initialShot;
     this.targeting = targeting;
+    this.collector = collector;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
     addRequirements(conveyor);
-
-    timeCounter = 0;
+    addRequirements(collector);
+    
     
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    timeCounter = 0;
+    collector.deployCollector();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -55,12 +61,13 @@ public class FireCargoAuto extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     shooter.stopMotor();
+    conveyor.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(timeCounter >= 100 || shooter.getMeasurement() < 32) {
+    if(timeCounter >= 100) {
       return true;
     }
     return false;

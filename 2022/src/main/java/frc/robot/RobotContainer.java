@@ -48,7 +48,7 @@ public class RobotContainer {
   private final Collector collector = new Collector();
   private final Conveyor conveyor = new Conveyor();
   private final Climb climber = new Climb();
-  private final Finder finder = new Finder(true);
+  private final Finder finder = new Finder();
   private final Targeting targeting = new Targeting();
 
   private final XboxController xBox = new XboxController(2);
@@ -60,12 +60,16 @@ public class RobotContainer {
   private final DriveBackwardCommand driveForwardCommand = new DriveBackwardCommand(drivetrain);
   //TODO need auto commands for shoot then taxi, shoot and find ball, shoot-find-shoot, and find-shoot-shoot
 
-  SendableChooser<Command> autoChooser = new SendableChooser<>();
+  SendableChooser<Command> autoChooser = new SendableChooser<Command>();
+  SendableChooser<Boolean> allianceChooser = new SendableChooser<Boolean>();
 
   public RobotContainer() {
     autoChooser.setDefaultOption("Drive Forward", driveForwardCommand);
 
     SmartDashboard.putData(autoChooser);
+    allianceChooser.setDefaultOption("blue", true);
+    allianceChooser.addOption("red", false);
+    SmartDashboard.putData(allianceChooser);
 
     drivetrain.setDefaultCommand(new RunCommand(
       () -> drivetrain.driveRobot(throttle.getY(), wheel.getX()), 
@@ -103,13 +107,13 @@ public class RobotContainer {
       () -> shifter.autoShift(),
       shifter
       ));
-    new JoystickButton(throttle, 7).whenPressed(new FireCargoAuto(shooter, conveyor, true, targeting));
+    new JoystickButton(throttle, 7).whenPressed(new FireCargoAuto(shooter, conveyor, true, targeting, collector));
     new JoystickButton(throttle, 8).whenPressed(new DriveBackwardCommand(drivetrain));
-    new JoystickButton(throttle, 9).whenPressed(new TurnRobot(drivetrain, -90));
+    new JoystickButton(throttle, 9).whenPressed(new TurnRobot(drivetrain, -70));
     new JoystickButton(throttle, 10).whenPressed(new BallSeeker(drivetrain, finder));
     new JoystickButton(throttle, 11).whenPressed(new TurnRobot(drivetrain, 90));
     new JoystickButton(throttle, 1).whileHeld(new Aim(drivetrain, targeting));
-    new JoystickButton(throttle, 12).whenPressed(new FireCargoAuto(shooter, conveyor, false, targeting));
+    new JoystickButton(throttle, 12).whenPressed(new FireCargoAuto(shooter, conveyor, false, targeting, collector));
 
     new JoystickButton(xBox, Button.kA.value).whenPressed(new InstantCommand(collector::deployCollector, collector));
     new JoystickButton(xBox, Button.kY.value).whenPressed(new InstantCommand(collector::retractCollector, collector));

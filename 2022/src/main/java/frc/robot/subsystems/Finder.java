@@ -17,16 +17,10 @@ public class Finder extends SubsystemBase {
   /** Creates a new Finder. */
   private Pixy2 pixy;
   private int ballCount;
-  private int sig;
+  private int sig = Pixy2CCC.CCC_SIG1;
   private ArrayList<Block> balls;
 
-  public Finder(boolean color) {//blue is true, red is false
-    if(color){
-      sig = Pixy2CCC.CCC_SIG2;//blue
-    }
-    else{
-      sig = Pixy2CCC.CCC_SIG1;//red
-    }
+  public Finder() {//blue is true, red is false
     pixy = Pixy2.createInstance(new SPILink());
     pixy.init();
     balls = new ArrayList<Block>();
@@ -36,6 +30,7 @@ public class Finder extends SubsystemBase {
   public void periodic() {
     ballCount = pixy.getCCC().getBlocks(false, sig, 11);
     SmartDashboard.putNumber("targets found", ballCount);
+    SmartDashboard.putBoolean("alliance color", sig == Pixy2CCC.CCC_SIG2);
     //debugging code
     balls = pixy.getCCC().getBlockCache();
     /*balls = pixy.getCCC().getBlockCache();
@@ -52,7 +47,7 @@ public class Finder extends SubsystemBase {
       dize[0] = 160;//designated did not find a ball
       return dize;
     }
-    ArrayList<Block> balls = pixy.getCCC().getBlockCache();
+    //ArrayList<Block> balls = pixy.getCCC().getBlockCache();
     Block closestBall = balls.get(0);
     for(int index = 1; index<balls.size(); index++){
       if(balls.get(index).getWidth()>closestBall.getWidth()){
@@ -65,4 +60,13 @@ public class Finder extends SubsystemBase {
     SmartDashboard.putNumber("largest width", dize[1]);
     return dize;
   }//end findClosestCargo
+
+  public void setColor(boolean color){
+    if(color){
+      sig = Pixy2CCC.CCC_SIG2;//blue
+    }
+    else{
+      sig = Pixy2CCC.CCC_SIG1;//red
+    }
+  }
 }//end subsystem
