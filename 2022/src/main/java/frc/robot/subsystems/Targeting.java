@@ -14,13 +14,14 @@ public class Targeting extends SubsystemBase {
   private final double HEIGHT_OF_TARGET = 101.5 / 12; //8.67 for actual target
   private final double HEIGHT_OF_CAMERA = 37.5 / 12;
   private final double MOUNT_ANGLE = 33.1; 
-  private final double SHOOTING_RANGE = 15.0; //TODO find actual range
 
   private NetworkTable limelight;
+  private NetworkTableEntry tv;
   private NetworkTableEntry tx;
   private NetworkTableEntry ty;
   private NetworkTableEntry ta;
 
+  private double validTarget;
   private double x;
   private double y;
   private double a;
@@ -28,32 +29,40 @@ public class Targeting extends SubsystemBase {
   /** Creates a new Targeting. */
   public Targeting() {
     limelight = NetworkTableInstance.getDefault().getTable("limelight");
+    tv = limelight.getEntry("tv");
     tx = limelight.getEntry("tx");
     ty = limelight.getEntry("ty");
     ta = limelight.getEntry("ta");
 
+    validTarget = 0;
     x = 100;
     y = 100;
     a = -1;
 
     limelight.getEntry("ledMode").setNumber(3);
-     limelight.getEntry("camMode").setNumber(0);
-     limelight.getEntry("pipeline").setNumber(0);
+    limelight.getEntry("camMode").setNumber(0);
+    limelight.getEntry("pipeline").setNumber(0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    validTarget = tv.getDouble(0);
     x = tx.getDouble(0);
     y = ty.getDouble(0);
     a = ta.getDouble(0);
 
+    SmartDashboard.putNumber("Limelight Valid Target", validTarget);
     SmartDashboard.putNumber("limelight x", x);
     SmartDashboard.putNumber("limelight y", y);
     //SmartDashboard.putNumber("limelight a", a);
     SmartDashboard.putNumber("range", calcRange());
   }
 
+  public double getValidTarget(){
+    return validTarget;
+  }
+  
   public double getX() {
     return x;
   }
@@ -66,7 +75,7 @@ public class Targeting extends SubsystemBase {
     return a;
   }
 
-  public void ledControl(boolean on) {
+  public void ledOn(boolean on) {
     NetworkTableEntry led = limelight.getEntry("ledMode");
     if(on) {
       led.setNumber(3);
@@ -80,7 +89,4 @@ public class Targeting extends SubsystemBase {
     return d + 2.5;       
   }
 
-  public double distanceToRange() {
-    return calcRange() - SHOOTING_RANGE;
-  }
 }

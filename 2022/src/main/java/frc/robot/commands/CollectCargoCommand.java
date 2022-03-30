@@ -14,16 +14,21 @@ public class CollectCargoCommand extends CommandBase {
   private Collector collector;
   private Drivetrain drivetrain;
   private Conveyor conveyor;
-
-  private final double DISTANCE_WHEN_CAUGHT = 0.3; // in volts
-  //TODO find real distance when ball is captured
+  private double distanceToDrive;
+  private int cyclesToStop;
 
   /** Creates a new CollectCargoCommand. */
-  public CollectCargoCommand(Collector collector, Drivetrain drivetrain, Conveyor conveyor) {
+  public CollectCargoCommand(Collector collector, Drivetrain drivetrain, Conveyor conveyor , boolean withPixy) {
     //this.finder = finder;
     this.collector = collector;
     this.drivetrain = drivetrain;
     this.conveyor = conveyor;
+    if(withPixy){
+      distanceToDrive = 2;
+    }
+    else{
+      distanceToDrive = 4;
+    }
 
     // Use addRequirements() here to declare subsystem dependencies.
     //addRequirements(finder);
@@ -35,16 +40,18 @@ public class CollectCargoCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    drivetrain.resetYaw(0);
     drivetrain.resetEncoders();
+    cyclesToStop = 100;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    collector.forward();
-    drivetrain.driveRobot(0.4, 0);
+    collector.runCollector(1);
+    drivetrain.driveRobot(-0.4, drivetrain.getYPR()[0]/30);
     conveyor.up();
-    
+    cyclesToStop--;
   }
 
   // Called once the command ends or is interrupted.
@@ -57,8 +64,8 @@ public class CollectCargoCommand extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() { // TODO finish finisher
-     if(drivetrain.getLeftDistance() == 2 || drivetrain.getRightDistance() == 2) {
+  public boolean isFinished() { 
+     if(drivetrain.getLeftDistance() == distanceToDrive || drivetrain.getRightDistance() == distanceToDrive || cyclesToStop <= 0) {
        return true;
      } 
     return false;

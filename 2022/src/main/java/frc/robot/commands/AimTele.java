@@ -6,44 +6,42 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Targeting;
 
-public class DriveBackwardCommand extends CommandBase {
+public class AimTele extends CommandBase {
   private Drivetrain drivetrain;
-  private final double DISTANCE_TO_DRIVE = -4;//in ft
-  private  int cyclesToStop;
+  private Targeting targeting;
 
-  /** Creates a new DriveForwardCommand. */
-  public DriveBackwardCommand(Drivetrain drivetrain) {
+  /** Creates a new Aim. */
+  public AimTele(Drivetrain drivetrain, Targeting targeting) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
+    this.targeting = targeting;
     addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivetrain.resetYaw(0);
-    drivetrain.resetEncoders();
-    cyclesToStop = 200;
+    targeting.ledOn(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.driveRobot(1, drivetrain.getYPR()[0]/30);
-    cyclesToStop--;
+    drivetrain.driveRobot(0, targeting.getX()/20);
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    targeting.ledOn(false);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(drivetrain.getLeftDistance() <= DISTANCE_TO_DRIVE || drivetrain.getRightDistance() <= DISTANCE_TO_DRIVE || cyclesToStop <= 0) {
-      return true;
-    }
     return false;
   }
 }

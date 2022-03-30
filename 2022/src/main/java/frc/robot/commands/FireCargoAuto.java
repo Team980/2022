@@ -46,15 +46,16 @@ public class FireCargoAuto extends CommandBase {
   @Override
   public void execute() {
     if(initialShot) {
-      conveyor.runConveyor(-1);
       shooter.setSetpoint(36);
-      timeCounter++;
+      conveyor.runConveyor(-1);
     }
     else {
-      conveyor.runConveyor(-1);
       spinToRange = 1.89 * targeting.calcRange() + 24;
       shooter.setSetpoint(spinToRange);
+      conveyor.runConveyor(-1);
+      collector.runCollector(1);
     }
+    timeCounter++;
   }
 
   // Called once the command ends or is interrupted.
@@ -62,6 +63,7 @@ public class FireCargoAuto extends CommandBase {
   public void end(boolean interrupted) {
     shooter.stopMotor();
     conveyor.stop();
+    collector.stop();
   }
 
   // Returns true when the command should end.

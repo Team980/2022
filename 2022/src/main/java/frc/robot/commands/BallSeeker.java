@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Finder;
 // import static frc.robot.Constants.*;
@@ -15,12 +14,13 @@ public class BallSeeker extends CommandBase {
   private Drivetrain drivetrain;
   private Finder finder;
   private int[] dize;
+  private boolean color;
   private final double SIZE_WHEN_CAUGHT = 73.0; 
-  private final double MIN_DRIVE_POWER = 0.3;
 
-  public BallSeeker(Drivetrain drivetrain, Finder finder) {
+  public BallSeeker(Drivetrain drivetrain, Finder finder , boolean color) {
     this.drivetrain = drivetrain;
     this.finder = finder;
+    this.color = color;
 
     dize = new int[2];
 
@@ -31,7 +31,9 @@ public class BallSeeker extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    finder.setColor(color);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -41,7 +43,7 @@ public class BallSeeker extends CommandBase {
       drivetrain.driveRobot(0, 0.5);
     } //end if 
     else {
-      drivetrain.driveRobot(0.75*(1-(dize[1] / SIZE_WHEN_CAUGHT)) + MIN_DRIVE_POWER , 1.5 * (dize[0] / 157.0) );
+      drivetrain.driveRobot(-.75 , dize[0] / 100.0 );
       //drivetrain.driveRobot(0, 1.25 * (dize[0] / 157.0) );
     } //end else
   } //end execute

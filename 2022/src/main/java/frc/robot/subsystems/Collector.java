@@ -48,16 +48,6 @@ public class Collector extends SubsystemBase {
     deployRetract.set(false);
   }
   
-  public void forward() {
-    collect.set(-1);
-    grabber.set(-1);
-  }
-
-  public void reverse() {
-    collect.set(1);
-    grabber.set(1);
-  }
-
   public void runCollector(double speed){
     if (speed >= .6){
       collect.set(.6);
