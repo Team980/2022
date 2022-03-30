@@ -15,7 +15,7 @@ public class BallSeeker extends CommandBase {
   private Drivetrain drivetrain;
   private Finder finder;
   private int[] dize;
-  private final double SIZE_WHEN_CAUGHT = 73.0; //TODO NEED TO FIND VALUE
+  private final double SIZE_WHEN_CAUGHT = 73.0; 
   private final double MIN_DRIVE_POWER = 0.3;
 
   public BallSeeker(Drivetrain drivetrain, Finder finder) {

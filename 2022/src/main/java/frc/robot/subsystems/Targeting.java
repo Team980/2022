@@ -11,9 +11,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Targeting extends SubsystemBase {
-  private final double HEIGHT_OF_TARGET = 8.67;
-  private final double HEIGHT_OF_CAMERA = 4.0; //TODO find actual height 
-  private final double MOUNT_ANGLE = 45.0; //TODO find actual angle
+  private final double HEIGHT_OF_TARGET = 101.5 / 12; //8.67 for actual target
+  private final double HEIGHT_OF_CAMERA = 37.5 / 12;
+  private final double MOUNT_ANGLE = 33.1; 
   private final double SHOOTING_RANGE = 15.0; //TODO find actual range
 
   private NetworkTable limelight;
@@ -36,9 +36,9 @@ public class Targeting extends SubsystemBase {
     y = 100;
     a = -1;
 
-    limelight.getEntry("ledMode").setNumber(1);
-    limelight.getEntry("camMode").setNumber(0);
-    limelight.getEntry("pipeline").setNumber(0);
+    limelight.getEntry("ledMode").setNumber(3);
+     limelight.getEntry("camMode").setNumber(0);
+     limelight.getEntry("pipeline").setNumber(0);
   }
 
   @Override
@@ -50,7 +50,8 @@ public class Targeting extends SubsystemBase {
 
     SmartDashboard.putNumber("limelight x", x);
     SmartDashboard.putNumber("limelight y", y);
-    SmartDashboard.putNumber("limelight a", a);
+    //SmartDashboard.putNumber("limelight a", a);
+    SmartDashboard.putNumber("range", calcRange());
   }
 
   public double getX() {
@@ -76,7 +77,7 @@ public class Targeting extends SubsystemBase {
 
   public double calcRange() {
     double d = (HEIGHT_OF_TARGET - HEIGHT_OF_CAMERA) / Math.tan(Math.toRadians(MOUNT_ANGLE + y));
-    return d;       
+    return d + 2.5;       
   }
 
   public double distanceToRange() {

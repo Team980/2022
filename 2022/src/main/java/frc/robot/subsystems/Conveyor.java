@@ -22,11 +22,11 @@ public class Conveyor extends SubsystemBase {
   }
 
   public void up() {
-    conveyor.set(1);
+    conveyor.set(-1);
   }
 
   public void down() {
-    conveyor.set(-1);
+    conveyor.set(1);
   }
 
   public void runConveyor(double speed){

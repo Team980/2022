@@ -6,27 +6,30 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Collector;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Finder;
 
 public class CollectCargoCommand extends CommandBase {
   //private Finder finder;
   private Collector collector;
   private Drivetrain drivetrain;
+  private Conveyor conveyor;
 
   private final double DISTANCE_WHEN_CAUGHT = 0.3; // in volts
   //TODO find real distance when ball is captured
 
   /** Creates a new CollectCargoCommand. */
-  public CollectCargoCommand(Collector collector, Drivetrain drivetrain) {
+  public CollectCargoCommand(Collector collector, Drivetrain drivetrain, Conveyor conveyor) {
     //this.finder = finder;
     this.collector = collector;
     this.drivetrain = drivetrain;
+    this.conveyor = conveyor;
 
     // Use addRequirements() here to declare subsystem dependencies.
     //addRequirements(finder);
     addRequirements(collector);
     addRequirements(drivetrain);
+    addRequirements(conveyor);
   }
 
   // Called when the command is initially scheduled.
@@ -38,6 +41,7 @@ public class CollectCargoCommand extends CommandBase {
   public void execute() {
     collector.forward();
     drivetrain.driveRobot(0.4, 0);
+    conveyor.up();
     
   }
 
@@ -46,6 +50,7 @@ public class CollectCargoCommand extends CommandBase {
   public void end(boolean interrupted) {
     drivetrain.stop();
     collector.stop();
+    conveyor.stop();
   }
 
   // Returns true when the command should end.

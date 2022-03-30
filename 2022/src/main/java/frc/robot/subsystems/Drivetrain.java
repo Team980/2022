@@ -109,7 +109,7 @@ public class Drivetrain extends SubsystemBase {
     return ypr;
   }
 
-  public void resetYaw(){
-    imu.setYaw(0);
+  public void resetYaw(double value){
+    imu.setYaw(value);
   }
 }

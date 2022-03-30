@@ -10,7 +10,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.DriveForwardCommand;
+import frc.robot.commands.Aim;
+import frc.robot.commands.BallSeeker;
+import frc.robot.commands.DriveBackwardCommand;
+import frc.robot.commands.FireCargoAuto;
+import frc.robot.commands.FireCargoRange;
+import frc.robot.commands.TurnRobot;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Conveyor;
@@ -19,6 +24,7 @@ import frc.robot.subsystems.Finder;
 import frc.robot.subsystems.Shifter;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Targeting;
+import frc.robot.subsystems.VelocityControlledShooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -37,12 +43,13 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   private final Drivetrain drivetrain = new Drivetrain();
   private final Shifter shifter  = new Shifter (drivetrain);
-  private final Shooter shooter = new Shooter();
+  private final VelocityControlledShooter shooter = new VelocityControlledShooter();
+  //private final Shooter shooter = new Shooter();
   private final Collector collector = new Collector();
   private final Conveyor conveyor = new Conveyor();
   private final Climb climber = new Climb();
-  private final Finder tracker = new Finder(true);
-  private final Targeting targetingSystem = new Targeting();
+  private final Finder finder = new Finder(true);
+  private final Targeting targeting = new Targeting();
 
   private final XboxController xBox = new XboxController(2);
 
@@ -50,7 +57,7 @@ public class RobotContainer {
   private final Joystick throttle = new Joystick(1);
   private final Joystick prajBox = new Joystick(4);
 
-  private final DriveForwardCommand driveForwardCommand = new DriveForwardCommand(drivetrain);
+  private final DriveBackwardCommand driveForwardCommand = new DriveBackwardCommand(drivetrain);
   //TODO need auto commands for shoot then taxi, shoot and find ball, shoot-find-shoot, and find-shoot-shoot
 
   SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -76,6 +83,7 @@ public class RobotContainer {
       collector
       ));
     
+      shooter.enable();
 
     // Configure the button bindings
     configureButtonBindings();
@@ -95,10 +103,20 @@ public class RobotContainer {
       () -> shifter.autoShift(),
       shifter
       ));
-    new JoystickButton(xBox, Button.kY.value).whenPressed(new InstantCommand(collector::deployCollector, collector));
-    new JoystickButton(xBox, Button.kA.value).whenPressed(new InstantCommand(collector::retractCollector, collector));
-    new JoystickButton(xBox, Button.kStart.value).whenPressed(new RunCommand(shooter::fire, shooter));
-    new JoystickButton(xBox, Button.kBack.value).whenPressed(new RunCommand(shooter::stop, shooter));
+    new JoystickButton(throttle, 7).whenPressed(new FireCargoAuto(shooter, conveyor, true, targeting));
+    new JoystickButton(throttle, 8).whenPressed(new DriveBackwardCommand(drivetrain));
+    new JoystickButton(throttle, 9).whenPressed(new TurnRobot(drivetrain, -90));
+    new JoystickButton(throttle, 10).whenPressed(new BallSeeker(drivetrain, finder));
+    new JoystickButton(throttle, 11).whenPressed(new TurnRobot(drivetrain, 90));
+    new JoystickButton(throttle, 1).whileHeld(new Aim(drivetrain, targeting));
+    new JoystickButton(throttle, 12).whenPressed(new FireCargoAuto(shooter, conveyor, false, targeting));
+
+    new JoystickButton(xBox, Button.kA.value).whenPressed(new InstantCommand(collector::deployCollector, collector));
+    new JoystickButton(xBox, Button.kY.value).whenPressed(new InstantCommand(collector::retractCollector, collector));
+    new JoystickButton(xBox, Button.kX.value).whenPressed(new RunCommand(shooter::manualOverride, shooter));
+    new JoystickButton(xBox, Button.kStart.value).whenPressed(new FireCargoRange(shooter, targeting));
+    new JoystickButton(xBox, Button.kBack.value).whenPressed(new InstantCommand(shooter::stopMotor, shooter));
+    new JoystickButton(xBox, Button.kB.value).whenPressed(new RunCommand(shooter::lowGoal, shooter));
     new POVButton(xBox, 0).whenPressed(new InstantCommand(climber::extend, climber));
     //TODO need to find number of safety switch
     new POVButton(xBox, 180).whenPressed(new InstantCommand(climber::retract, climber));

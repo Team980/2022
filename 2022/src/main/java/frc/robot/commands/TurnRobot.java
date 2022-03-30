@@ -7,31 +7,29 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class DriveForwardCommand extends CommandBase {
+public class TurnRobot extends CommandBase {
   private Drivetrain drivetrain;
-  private final double DISTANCE_TO_DRIVE = 5;//in ft
-  private  int cyclesToStop = 500;
-  //TODO need to find actual taxi distance
+  private double turnAmount;
 
-  /** Creates a new DriveForwardCommand. */
-  public DriveForwardCommand(Drivetrain drivetrain) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  /** Creates a new TurnRobot. */
+  public TurnRobot(Drivetrain drivetrain, double turnAmount) {
     this.drivetrain = drivetrain;
+    this.turnAmount = turnAmount;
+
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivetrain.resetYaw();
-    drivetrain.resetEncoders();
+    drivetrain.resetYaw(turnAmount);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.driveRobot(-0.5, drivetrain.getYPR()[0]/45);
-    cyclesToStop--;
+    drivetrain.driveRobot(0, drivetrain.getYPR()[0]/45);
   }
 
   // Called once the command ends or is interrupted.
@@ -41,8 +39,8 @@ public class DriveForwardCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(drivetrain.getLeftDistance() >= DISTANCE_TO_DRIVE || drivetrain.getRightDistance() >= DISTANCE_TO_DRIVE || cyclesToStop <= 0) {
-      return true;
+    if(Math.abs(drivetrain.getYPR()[0]) < 5) {
+        return true;
     }
     return false;
   }

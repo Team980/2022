@@ -16,23 +16,24 @@ public class Shooter extends SubsystemBase {
   private WPI_TalonSRX flywheelTop;
   private WPI_TalonSRX flywheelBottom;
   private Encoder shooterEncoder; 
+
   public Shooter() {
     flywheelTop = new WPI_TalonSRX(10);
     flywheelBottom = new WPI_TalonSRX(11);
 
     shooterEncoder = new Encoder(8, 9, true, EncodingType.k4X);
-    shooterEncoder.setDistancePerPulse(1 / 2048);
+    shooterEncoder.setDistancePerPulse(1.0 / 2048);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("shooter rps", shooterEncoder.getRate());
+    SmartDashboard.putNumber("I Hate You (shooter encoder)", shooterEncoder.getRate());
   }
 
-  public void fire() {
-    flywheelTop.set(-.5);
-    flywheelBottom.set(-.5);
+  public void manualOverride() {
+    flywheelTop.set(-1);
+    flywheelBottom.set(-1);
   }
 
   public void stop() {
