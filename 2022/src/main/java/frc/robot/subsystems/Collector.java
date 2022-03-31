@@ -33,7 +33,6 @@ public class Collector extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     distance = ballDetector.getVoltage();
-    SmartDashboard.putNumber("distance in volts", distance);
   }
   
   public double getDistance(){
@@ -44,8 +43,17 @@ public class Collector extends SubsystemBase {
     deployRetract.set(true);
   }
 
+  public void collectorDown(){
+    deployRetract.set(true);
+  }
+
   public void retractCollector(){
     deployRetract.set(false);
+  }
+
+  public void spinCollector(){
+    collect.set(.6);
+    grabber.set(1);
   }
   
   public void runCollector(double speed){

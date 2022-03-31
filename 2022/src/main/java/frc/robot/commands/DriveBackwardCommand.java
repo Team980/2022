@@ -5,18 +5,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Collector;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveBackwardCommand extends CommandBase {
   private Drivetrain drivetrain;
-  private final double DISTANCE_TO_DRIVE = -4;//in ft
+  private Collector collector;
+  private final double DISTANCE_TO_DRIVE = -3;//in ft
   private  int cyclesToStop;
 
   /** Creates a new DriveForwardCommand. */
-  public DriveBackwardCommand(Drivetrain drivetrain) {
+  public DriveBackwardCommand(Drivetrain drivetrain, Collector collector) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
+    this.collector = collector;
     addRequirements(drivetrain);
+    addRequirements(collector);
   }
 
   // Called when the command is initially scheduled.
@@ -24,6 +28,7 @@ public class DriveBackwardCommand extends CommandBase {
   public void initialize() {
     drivetrain.resetYaw(0);
     drivetrain.resetEncoders();
+    collector.collectorDown();
     cyclesToStop = 200;
   }
 

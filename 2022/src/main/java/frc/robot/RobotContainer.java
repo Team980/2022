@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AimAuto;
+import frc.robot.commands.AimTele;
 import frc.robot.commands.BallSeeker;
 import frc.robot.commands.CollectCargoCommand;
 import frc.robot.commands.DriveBackwardCommand;
@@ -58,15 +59,14 @@ public class RobotContainer {
   private final Joystick wheel = new Joystick(0);
   private final Joystick throttle = new Joystick(1);
   private final Joystick prajBox = new Joystick(4);
-
-  private final DriveBackwardCommand driveBackwardCommand = new DriveBackwardCommand(drivetrain);
+  private final DriveBackwardCommand driveBackwardCommand = new DriveBackwardCommand(drivetrain, collector);
   private final SequentialCommandGroup shootTaxi = new SequentialCommandGroup(
     new FireCargoAuto(shooter, conveyor, true, targeting, collector) , 
-    new DriveBackwardCommand(drivetrain)
+    new DriveBackwardCommand(drivetrain, collector)
   );
   private final SequentialCommandGroup shootFindShootDR = new SequentialCommandGroup(
     new FireCargoAuto(shooter, conveyor, true, targeting, collector) , 
-    new DriveBackwardCommand(drivetrain) , 
+    new DriveBackwardCommand(drivetrain, collector) , 
     new TurnRobot(drivetrain, -70) , 
     new CollectCargoCommand(collector, drivetrain, conveyor, false) , 
     new TurnRobot(drivetrain, 70) , 
@@ -74,7 +74,7 @@ public class RobotContainer {
   );
   private final SequentialCommandGroup shootFindShootPixyRed = new SequentialCommandGroup(
     new FireCargoAuto(shooter, conveyor, true, targeting, collector) , 
-    new DriveBackwardCommand(drivetrain) , 
+    new DriveBackwardCommand(drivetrain, collector) , 
     new TurnRobot(drivetrain, -70) , 
     new BallSeeker(drivetrain, finder, false) , //false is red
     new CollectCargoCommand(collector, drivetrain, conveyor, true) , 
@@ -83,7 +83,7 @@ public class RobotContainer {
   );
   private final SequentialCommandGroup shootFindShootPixyBlue = new SequentialCommandGroup(
     new FireCargoAuto(shooter, conveyor, true, targeting, collector) , 
-    new DriveBackwardCommand(drivetrain) , 
+    new DriveBackwardCommand(drivetrain, collector) , 
     new TurnRobot(drivetrain, -70) , 
     new BallSeeker(drivetrain, finder, true) , //true is blue
     new CollectCargoCommand(collector, drivetrain, conveyor, true) , 
@@ -137,14 +137,14 @@ public class RobotContainer {
       () -> shifter.autoShift(),
       shifter
       ));
-    new JoystickButton(throttle, 7).whenPressed(new FireCargoAuto(shooter, conveyor, true, targeting, collector));
-    new JoystickButton(throttle, 8).whenPressed(new DriveBackwardCommand(drivetrain));
-    new JoystickButton(throttle, 9).whenPressed(new TurnRobot(drivetrain, -70));
-    new JoystickButton(throttle, 10).whenPressed(new BallSeeker(drivetrain, finder , false));
-    new JoystickButton(throttle, 11).whenPressed(new CollectCargoCommand(collector, drivetrain, conveyor, true));//switch to false for dead reckoning
-    new JoystickButton(throttle, 12).whenPressed(new TurnRobot(drivetrain, 90));
-    new JoystickButton(throttle, 1).whileHeld(new AimAuto(drivetrain, targeting));//TODO switch to aimTele for competition
-    new JoystickButton(throttle, 2).whenPressed(new FireCargoAuto(shooter, conveyor, false, targeting, collector));
+    // new JoystickButton(throttle, 7).whenPressed(new FireCargoAuto(shooter, conveyor, true, targeting, collector));
+    // new JoystickButton(throttle, 8).whenPressed(new DriveBackwardCommand(drivetrain, collector));
+    // new JoystickButton(throttle, 9).whenPressed(new TurnRobot(drivetrain, -70));
+    // new JoystickButton(throttle, 10).whenPressed(new BallSeeker(drivetrain, finder , false));
+    // new JoystickButton(throttle, 11).whenPressed(new CollectCargoCommand(collector, drivetrain, conveyor, false));//switch to false for dead reckoning
+    // new JoystickButton(throttle, 12).whenPressed(new TurnRobot(drivetrain, 90));
+    new JoystickButton(throttle, 1).whileHeld(new AimTele(drivetrain, targeting));//TODO switch to aimTele for competition
+    // new JoystickButton(throttle, 2).whenPressed(new FireCargoAuto(shooter, conveyor, false, targeting, collector));
 
     new JoystickButton(xBox, Button.kA.value).whenPressed(new InstantCommand(collector::deployCollector, collector));
     new JoystickButton(xBox, Button.kY.value).whenPressed(new InstantCommand(collector::retractCollector, collector));

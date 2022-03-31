@@ -29,8 +29,9 @@ public class AimAuto extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    targeting.ledOn(true);
     if(targeting.getValidTarget() == 1){
-      drivetrain.driveRobot(0, targeting.getX()/10);
+      drivetrain.driveRobot(0, (targeting.getX() - 2)/20);
     }
     
 
@@ -45,7 +46,7 @@ public class AimAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(targeting.getX()) < 2 && targeting.getValidTarget() == 1){
+    if(Math.abs(targeting.getX()) < 1 && targeting.getValidTarget() == 1){
       return true;
     }
     return false;

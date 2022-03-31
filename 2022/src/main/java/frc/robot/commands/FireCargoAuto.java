@@ -46,7 +46,7 @@ public class FireCargoAuto extends CommandBase {
   @Override
   public void execute() {
     if(initialShot) {
-      shooter.setSetpoint(36);
+      shooter.setSetpoint(34);
       conveyor.runConveyor(-1);
     }
     else {
@@ -69,7 +69,10 @@ public class FireCargoAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(timeCounter >= 100) {
+    if(timeCounter >= 100 && initialShot) {
+      return true;
+    }
+    else if(timeCounter >= 250){
       return true;
     }
     return false;

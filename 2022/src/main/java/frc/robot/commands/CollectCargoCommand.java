@@ -27,7 +27,7 @@ public class CollectCargoCommand extends CommandBase {
       distanceToDrive = 2;
     }
     else{
-      distanceToDrive = 4;
+      distanceToDrive = 3;
     }
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -42,14 +42,19 @@ public class CollectCargoCommand extends CommandBase {
   public void initialize() {
     drivetrain.resetYaw(0);
     drivetrain.resetEncoders();
-    cyclesToStop = 100;
+    cyclesToStop = 150;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    collector.runCollector(1);
-    drivetrain.driveRobot(-0.4, drivetrain.getYPR()[0]/30);
+    collector.spinCollector();
+    if(drivetrain.getLeftDistance() <= 3 || drivetrain.getRightDistance() <= 3){
+      drivetrain.driveRobot(-0.7, drivetrain.getYPR()[0]/30); 
+    }
+    else{
+      drivetrain.stop();
+    }
     conveyor.up();
     cyclesToStop--;
   }
@@ -65,7 +70,7 @@ public class CollectCargoCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() { 
-     if(drivetrain.getLeftDistance() == distanceToDrive || drivetrain.getRightDistance() == distanceToDrive || cyclesToStop <= 0) {
+     if(cyclesToStop <= 0) {
        return true;
      } 
     return false;

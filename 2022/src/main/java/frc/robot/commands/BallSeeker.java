@@ -43,7 +43,7 @@ public class BallSeeker extends CommandBase {
       drivetrain.driveRobot(0, 0.5);
     } //end if 
     else {
-      drivetrain.driveRobot(-.75 , dize[0] / 100.0 );
+      drivetrain.driveRobot(0 , dize[0] / 100.0 );
       //drivetrain.driveRobot(0, 1.25 * (dize[0] / 157.0) );
     } //end else
   } //end execute
@@ -57,7 +57,7 @@ public class BallSeeker extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (dize[1] >= SIZE_WHEN_CAUGHT) {
+    if (Math.abs(dize[0]) <= 5) {
       return true;
     } //end if
     return false;

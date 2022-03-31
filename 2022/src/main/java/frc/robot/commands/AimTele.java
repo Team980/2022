@@ -23,13 +23,14 @@ public class AimTele extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    targeting.ledOn(true);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.driveRobot(0, targeting.getX()/20);
+    targeting.ledOn(true);
+    drivetrain.driveRobot(0, (targeting.getX() - 2)/20);
 
   }
 
