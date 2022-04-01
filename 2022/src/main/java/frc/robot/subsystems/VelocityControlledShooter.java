@@ -59,7 +59,7 @@ public class VelocityControlledShooter extends PIDSubsystem {
   public void manualOverride() {
     SmartDashboard.putNumber("Manual shooter rps", shooterEncoder.getRate());
     disable();
-    double throttle = 0.7;
+    double throttle = 0.25;
     if(Math.abs(throttle) > 0.1) {
       flywheelTop.set(throttle);
       flywheelBottom.set(throttle);

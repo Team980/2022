@@ -67,6 +67,9 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void driveRobot(double move, double turn) {
+    if(turn > .85){
+      turn = .85;
+    }
       robotDrive.arcadeDrive(-move, turn);
   }
 

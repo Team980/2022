@@ -32,8 +32,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public void manualOverride() {
-    flywheelTop.set(-1);
-    flywheelBottom.set(-1);
+    flywheelTop.set(-.16);
+    flywheelBottom.set(-.16);
   }
 
   public void stop() {

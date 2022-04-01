@@ -30,7 +30,7 @@ public class AimTele extends CommandBase {
   @Override
   public void execute() {
     targeting.ledOn(true);
-    drivetrain.driveRobot(0, (targeting.getX() - 2)/20);
+    drivetrain.driveRobot(0, (targeting.getX() + 2)/20);
 
   }
 
