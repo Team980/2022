@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Targeting extends SubsystemBase {
-  private final double HEIGHT_OF_TARGET = 101.5 / 12; //8.67 for actual target
+  private final double HEIGHT_OF_TARGET = 8.67; //8.67 for actual target
   private final double HEIGHT_OF_CAMERA = 37.5 / 12;
   private final double MOUNT_ANGLE = 33.1; 
 

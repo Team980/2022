@@ -70,6 +70,7 @@ public class RobotContainer {
     new TurnRobot(drivetrain, -70) , 
     new CollectCargoCommand(collector, drivetrain, conveyor, false) , 
     new TurnRobot(drivetrain, 70) , 
+    new AimAuto(drivetrain, targeting),
     new FireCargoAuto(shooter, conveyor, false, targeting, collector)
   );
   private final SequentialCommandGroup shootFindShootPixyRed = new SequentialCommandGroup(
@@ -79,6 +80,7 @@ public class RobotContainer {
     new BallSeeker(drivetrain, finder, false) , //false is red
     new CollectCargoCommand(collector, drivetrain, conveyor, true) , 
     new TurnRobot(drivetrain, 70) , 
+    new AimAuto(drivetrain, targeting),
     new FireCargoAuto(shooter, conveyor, false, targeting, collector)
   );
   private final SequentialCommandGroup shootFindShootPixyBlue = new SequentialCommandGroup(
@@ -88,6 +90,28 @@ public class RobotContainer {
     new BallSeeker(drivetrain, finder, true) , //true is blue
     new CollectCargoCommand(collector, drivetrain, conveyor, true) , 
     new TurnRobot(drivetrain, 70) , 
+    new AimAuto(drivetrain, targeting),
+    new FireCargoAuto(shooter, conveyor, false, targeting, collector)
+  );
+
+  private final SequentialCommandGroup pixyOtherDirectionRed = new SequentialCommandGroup(
+    new FireCargoAuto(shooter, conveyor, true, targeting, collector) , 
+    new DriveBackwardCommand(drivetrain, collector) , 
+    new TurnRobot(drivetrain, 70) , 
+    new BallSeeker(drivetrain, finder, false) , //false is red
+    new CollectCargoCommand(collector, drivetrain, conveyor, true) , 
+    new TurnRobot(drivetrain, -70) , 
+    new AimAuto(drivetrain, targeting),
+    new FireCargoAuto(shooter, conveyor, false, targeting, collector)
+  );
+  private final SequentialCommandGroup pixyOtherDirectionBlue = new SequentialCommandGroup(
+    new FireCargoAuto(shooter, conveyor, true, targeting, collector) , 
+    new DriveBackwardCommand(drivetrain, collector) , 
+    new TurnRobot(drivetrain, 70) , 
+    new BallSeeker(drivetrain, finder, true) , //true is blue
+    new CollectCargoCommand(collector, drivetrain, conveyor, true) , 
+    new TurnRobot(drivetrain, -70) , 
+    new AimAuto(drivetrain, targeting),
     new FireCargoAuto(shooter, conveyor, false, targeting, collector)
   );
 
@@ -98,6 +122,8 @@ public class RobotContainer {
     autoChooser.addOption("Seek Red", shootFindShootPixyRed);
     autoChooser.addOption("Seek Blue", shootFindShootPixyBlue);
     autoChooser.addOption("No Pixy", shootFindShootDR);
+    autoChooser.addOption("Opposite Direction Red", pixyOtherDirectionRed);
+    autoChooser.addOption("Opposite Direction Blue", pixyOtherDirectionBlue);
     autoChooser.addOption("Taxi Only", driveBackwardCommand);
 
     SmartDashboard.putData(autoChooser);

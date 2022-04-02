@@ -31,7 +31,7 @@ public class AimAuto extends CommandBase {
   public void execute() {
     targeting.ledOn(true);
     if(targeting.getValidTarget() == 1){
-      drivetrain.driveRobot(0, (targeting.getX() - 2)/20);
+      drivetrain.driveRobot(0, (targeting.getX() + 2)/20);
     }
     
 

@@ -46,10 +46,11 @@ public class FireCargoAuto extends CommandBase {
   @Override
   public void execute() {
     if(initialShot) {
-      shooter.setSetpoint(34);
+      shooter.setSetpoint(36);
       conveyor.runConveyor(-1);
     }
     else {
+      targeting.ledOn(true);
       spinToRange = 1.89 * targeting.calcRange() + 24;
       shooter.setSetpoint(spinToRange);
       conveyor.runConveyor(-1);
@@ -64,6 +65,7 @@ public class FireCargoAuto extends CommandBase {
     shooter.stopMotor();
     conveyor.stop();
     collector.stop();
+    targeting.ledOn(false);
   }
 
   // Returns true when the command should end.

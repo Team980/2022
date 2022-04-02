@@ -32,7 +32,8 @@ public class TurnRobot extends CommandBase {
   @Override
   public void execute() {
     if(drivetrain.getIMUHealth() == 0 && pauseAmount <= 0){
-      drivetrain.driveRobot(0, drivetrain.getYPR()[0]/55);
+      //drivetrain.driveRobot(0, drivetrain.getYPR()[0]/55);
+      drivetrain.driveRobot(0, 0.4);
     }
     else{
       // drivetrain.stop();
