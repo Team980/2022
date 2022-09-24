@@ -24,7 +24,7 @@ public class TurnRobot extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pauseAmount = 50;
+    pauseAmount = 25;
     drivetrain.resetYaw(turnAmount);
   }
 
@@ -33,7 +33,14 @@ public class TurnRobot extends CommandBase {
   public void execute() {
     if(drivetrain.getIMUHealth() == 0 && pauseAmount <= 0){
       //drivetrain.driveRobot(0, drivetrain.getYPR()[0]/55);
-      drivetrain.driveRobot(0, 0.4);
+      if(turnAmount > 0){
+        drivetrain.driveRobot(0, 0.55);
+      }
+      else{
+        drivetrain.driveRobot(0, -0.55);
+      }
+      
+      
     }
     else{
       // drivetrain.stop();

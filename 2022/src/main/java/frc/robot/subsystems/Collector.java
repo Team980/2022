@@ -57,12 +57,13 @@ public class Collector extends SubsystemBase {
   }
   
   public void runCollector(double speed){
-    if (speed >= .6){
-      collect.set(.6);
+    if (speed >= .7){
+      collect.set(.7);
     }
     else {
       collect.set(speed);
     }
+    //collect.set(speed);
     grabber.set(speed);
   }
 

@@ -67,9 +67,9 @@ public class RobotContainer {
   private final SequentialCommandGroup shootFindShootDR = new SequentialCommandGroup(
     new FireCargoAuto(shooter, conveyor, true, targeting, collector) , 
     new DriveBackwardCommand(drivetrain, collector) , 
-    new TurnRobot(drivetrain, -70) , 
+    new TurnRobot(drivetrain, -77) , 
     new CollectCargoCommand(collector, drivetrain, conveyor, false) , 
-    new TurnRobot(drivetrain, 70) , 
+    new TurnRobot(drivetrain, 77) , 
     new AimAuto(drivetrain, targeting),
     new FireCargoAuto(shooter, conveyor, false, targeting, collector)
   );
@@ -97,20 +97,20 @@ public class RobotContainer {
   private final SequentialCommandGroup pixyOtherDirectionRed = new SequentialCommandGroup(
     new FireCargoAuto(shooter, conveyor, true, targeting, collector) , 
     new DriveBackwardCommand(drivetrain, collector) , 
-    new TurnRobot(drivetrain, 70) , 
+    new TurnRobot(drivetrain, 50) , 
     new BallSeeker(drivetrain, finder, false) , //false is red
     new CollectCargoCommand(collector, drivetrain, conveyor, true) , 
-    new TurnRobot(drivetrain, -70) , 
+    new TurnRobot(drivetrain, -50) , 
     new AimAuto(drivetrain, targeting),
     new FireCargoAuto(shooter, conveyor, false, targeting, collector)
   );
   private final SequentialCommandGroup pixyOtherDirectionBlue = new SequentialCommandGroup(
     new FireCargoAuto(shooter, conveyor, true, targeting, collector) , 
     new DriveBackwardCommand(drivetrain, collector) , 
-    new TurnRobot(drivetrain, 70) , 
+    new TurnRobot(drivetrain, 50) , 
     new BallSeeker(drivetrain, finder, true) , //true is blue
     new CollectCargoCommand(collector, drivetrain, conveyor, true) , 
-    new TurnRobot(drivetrain, -70) , 
+    new TurnRobot(drivetrain, -50) , 
     new AimAuto(drivetrain, targeting),
     new FireCargoAuto(shooter, conveyor, false, targeting, collector)
   );
