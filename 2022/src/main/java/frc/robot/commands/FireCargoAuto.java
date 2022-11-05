@@ -74,7 +74,7 @@ public class FireCargoAuto extends CommandBase {
     if(timeCounter >= 100 && initialShot) {
       return true;
     }
-    else if(timeCounter >= 250){
+    else if(timeCounter >= 300){
       return true;
     }
     return false;

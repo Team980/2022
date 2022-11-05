@@ -52,18 +52,18 @@ public class Collector extends SubsystemBase {
   }
 
   public void spinCollector(){
-    collect.set(.6);
+    collect.set(.8);
     grabber.set(1);
   }
   
   public void runCollector(double speed){
-    if (speed >= .7){
-      collect.set(.7);
+    if (speed >= .8){
+      collect.set(.8);
     }
     else {
       collect.set(speed);
     }
-    //collect.set(speed);
+    collect.set(speed);
     grabber.set(speed);
   }
 
