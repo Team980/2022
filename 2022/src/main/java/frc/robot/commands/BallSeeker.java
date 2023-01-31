@@ -10,7 +10,7 @@ import frc.robot.subsystems.Finder;
 // import static frc.robot.Constants.*;
 
 public class BallSeeker extends CommandBase {
-  /** Creates a new BallSeeker. */
+  /** Creates a new BallSeeker */
   private Drivetrain drivetrain;
   private Finder finder;
   private int[] dize;
